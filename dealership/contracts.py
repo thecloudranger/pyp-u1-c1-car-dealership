@@ -6,7 +6,8 @@ class Contract(object):
         self.vehicle = vehicle
         self.customer = customer
 
-    def _discounted_price(self, price):
+    def total_value(self):
+        price = self._total_value()
         if self.customer.is_employee():
             return price * .9
         return price
@@ -26,14 +27,14 @@ class BuyContract(Contract):
         super(BuyContract, self).__init__(vehicle, customer)
         self.monthly_payments = monthly_payments
 
-    def total_value(self):
+    def _total_value(self):
         sale_price = self.vehicle.sale_price()
         multiplier = self.VEHICLE_MULTIPLIERS[self.vehicle.__class__]
 
         price = sale_price + (multiplier * self.monthly_payments *
                               sale_price / 100)
 
-        return self._discounted_price(price)
+        return price
 
     def _monthly_attribute(self):
         return self.monthly_payments
@@ -50,12 +51,11 @@ class LeaseContract(Contract):
         super(LeaseContract, self).__init__(vehicle, customer)
         self.length_in_months = length_in_months
 
-    def total_value(self):
+    def _total_value(self):
         sale_price = self.vehicle.sale_price()
         multiplier = self.VEHICLE_MULTIPLIERS[self.vehicle.__class__]
         price = sale_price + (sale_price * multiplier / self.length_in_months)
-
-        return self._discounted_price(price)
+        return price
 
     def _monthly_attribute(self):
         return self.length_in_months
