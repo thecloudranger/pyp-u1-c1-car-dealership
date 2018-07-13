@@ -135,8 +135,9 @@ def test_buy_contract_monthly_value_with_customer(fixtures):
         vehicle=fixtures.bike, customer=fixtures.customer, monthly_payments=36)
     assert round(bike_contract.monthly_value(), 2) == 753.94
 
+
 """
-Checks to see if a BuyContract total_value is calculated correctly for a Employee.
+Checks to see if a BuyContract total_value is calculated correctly for an Employee.
 
 The formula for the total value is
 vehicle.sale_price() + (interest_rate * monthly_payments * sale_price() / 100) - 10% discount
@@ -165,8 +166,17 @@ def test_buy_contract_with_employees(fixtures):
     assert round(bike_contract.total_value(), 2) == 24427.66
     assert round(bike_contract.monthly_value(), 2) == 678.55
 
-"""
 
+"""
+Checks to see if a LeaseContract total_value is calculated correctly for a Customer.
+
+The formula for the total value is
+vehicle.sale_price() + (lease_multiplier)
+
+Where the lease_multiplier formula is
+* Car: sale_price() + (sale_price() * 1.2 / length_in_months)
+* Motorcycle: sale_price() + (sale_price() * 1 / length_in_months)
+* Truck: sale_price() + (sale_price() * 1.7 / length_in_months)
 """
 def test_lease_contract_total_value_with_customer(fixtures):
     car_contract = LeaseContract(
@@ -181,8 +191,12 @@ def test_lease_contract_total_value_with_customer(fixtures):
         vehicle=fixtures.bike, customer=fixtures.customer, length_in_months=36)
     assert round(bike_contract.total_value(), 2) == 20350
 
-"""
 
+"""
+Checks to see if a LeaseContract monthly_value is calculated correctly for a Customer.
+
+The formula for the monthly_value is
+total_value() / length_in_months
 """
 def test_lease_contract_monthly_value_with_customer(fixtures):
     car_contract = LeaseContract(
@@ -197,8 +211,20 @@ def test_lease_contract_monthly_value_with_customer(fixtures):
         vehicle=fixtures.bike, customer=fixtures.customer, length_in_months=36)
     assert round(bike_contract.monthly_value(), 2) == 565.28
 
-"""
 
+"""
+Checks to see if a LeaseContract is calculated correctly for an Employee.
+
+The formula for the total value is
+vehicle.sale_price() + (lease_multiplier) - (discount)
+
+Where the lease_multiplier formula is
+* Car: sale_price() + (sale_price() * 1.2 / length_in_months)
+* Motorcycle: sale_price() + (sale_price() * 1 / length_in_months)
+* Truck: sale_price() + (sale_price() * 1.7 / length_in_months)
+
+And the monthly_value formula is
+total_value() / length_in_months
 """
 def test_lease_contract_with_employee(fixtures):
     car_contract = LeaseContract(
