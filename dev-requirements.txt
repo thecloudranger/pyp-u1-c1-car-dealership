@@ -1,4 +1,2 @@
-coverage==4.2
 pytest==3.4.2
 tox==2.7.0
-pytest-cov==2.4.0

@@ -12,4 +12,4 @@ install:
   - pip install -r dev-requirements.txt
 
 script:
-  - "PYTHONPATH=. py.test --cov=dealership tests"
+  - "PYTHONPATH=. py.test tests"
