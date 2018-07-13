@@ -6,6 +6,12 @@ from dealership.customers import Customer, Employee
 from dealership.vehicles import Car, Truck, Motorcycle
 
 
+"""
+Fixture sets up the system for the testing process by providing it with 
+all the necessary code to initialize it, and satisfying whatever preconditions there may be.
+
+This fixure sets up a simple object that contains the vehicles and person data
+"""
 @pytest.fixture
 def fixtures():
     fix = Namespace()
@@ -22,6 +28,14 @@ def fixtures():
     return fix
 
 
+"""
+Checks to see if the BuyContract is created properly.
+
+A new BuyContract should have 
+- The vehicle that was purchased (Car, Truck, Bike)
+- Customer or Employee
+- Number of months that the customer will take to pay
+"""
 def test_buy_contract_creation(fixtures):
     car_contract = BuyContract(
         vehicle=fixtures.car, customer=fixtures.customer, monthly_payments=6)
@@ -44,6 +58,14 @@ def test_buy_contract_creation(fixtures):
     assert bike_contract.customer == fixtures.customer
     assert bike_contract.monthly_payments == 36
 
+"""
+Checks to see if the LeaseContract is created properly.
+
+A new LeaseContract should have 
+- The vehicle that was leased (Car, Truck, Bike)
+- Customer or Employee
+- Number of months for the lease
+"""
 def test_lease_contract_creation(fixtures):
     car_contract = LeaseContract(
         vehicle=fixtures.car, customer=fixtures.customer, length_in_months=12)
@@ -66,6 +88,18 @@ def test_lease_contract_creation(fixtures):
     assert bike_contract.customer == fixtures.customer
     assert bike_contract.length_in_months == 36
 
+
+"""
+Checks to see if a BuyContract total_value is calculated correctly for a Customer.
+
+The formula for the total value is
+vehicle.sale_price() + (interest_rate * monthly_payments * sale_price() / 100)
+
+Where the interest_rate is
+* Car: 7% monthly (1.07)
+* Motorcycle: 3% monthly (1.03)
+* Truck: 11% monthly (1.11)
+"""
 def test_buy_contract_total_value_with_customer(fixtures):
     # Buy contract with a Car
     car_contract = BuyContract(
@@ -80,6 +114,13 @@ def test_buy_contract_total_value_with_customer(fixtures):
         vehicle=fixtures.bike, customer=fixtures.customer, monthly_payments=36)
     assert round(bike_contract.total_value(), 2) == 27141.84
 
+
+"""
+Checks to see if a BuyContract monthly_value is calculated correctly for a Customer.
+
+The formula for a monthly_value is
+total_value() / monthly_payments
+"""
 def test_buy_contract_monthly_value_with_customer(fixtures):
     # Buy contract with a Car
     car_contract = BuyContract(
@@ -94,6 +135,17 @@ def test_buy_contract_monthly_value_with_customer(fixtures):
         vehicle=fixtures.bike, customer=fixtures.customer, monthly_payments=36)
     assert round(bike_contract.monthly_value(), 2) == 753.94
 
+"""
+Checks to see if a BuyContract total_value is calculated correctly for a Employee.
+
+The formula for the total value is
+vehicle.sale_price() + (interest_rate * monthly_payments * sale_price() / 100) - 10% discount
+
+Where the interest_rate is
+* Car: 7% monthly (1.07)
+* Motorcycle: 3% monthly (1.03)
+* Truck: 11% monthly (1.11)
+"""
 def test_buy_contract_with_employees(fixtures):
     car_contract = BuyContract(
         vehicle=fixtures.car, customer=fixtures.employee, monthly_payments=6)
@@ -113,7 +165,9 @@ def test_buy_contract_with_employees(fixtures):
     assert round(bike_contract.total_value(), 2) == 24427.66
     assert round(bike_contract.monthly_value(), 2) == 678.55
 
+"""
 
+"""
 def test_lease_contract_total_value_with_customer(fixtures):
     car_contract = LeaseContract(
         vehicle=fixtures.car, customer=fixtures.customer, length_in_months=12)
@@ -127,6 +181,9 @@ def test_lease_contract_total_value_with_customer(fixtures):
         vehicle=fixtures.bike, customer=fixtures.customer, length_in_months=36)
     assert round(bike_contract.total_value(), 2) == 20350
 
+"""
+
+"""
 def test_lease_contract_monthly_value_with_customer(fixtures):
     car_contract = LeaseContract(
         vehicle=fixtures.car, customer=fixtures.customer, length_in_months=12)
@@ -140,7 +197,9 @@ def test_lease_contract_monthly_value_with_customer(fixtures):
         vehicle=fixtures.bike, customer=fixtures.customer, length_in_months=36)
     assert round(bike_contract.monthly_value(), 2) == 565.28
 
+"""
 
+"""
 def test_lease_contract_with_employee(fixtures):
     car_contract = LeaseContract(
         vehicle=fixtures.car, customer=fixtures.employee, length_in_months=12)
