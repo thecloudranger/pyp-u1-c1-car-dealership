@@ -104,4 +104,4 @@ Given a Car with `sale_price()` $15,000, a regular customer (not employee) and 1
 Given a Truck with `sale_price()` $35,000, a regular customer (not employee) and 36 `length_in_months`:
 
 * `total_value()`: `sale_price() + (sale_price() * 1.7 / length_in_months)` = `$35,000 + (35,000 * 1.7 / 36)` = `$36,652.77`
-* `monthly_value()`: `total_value() / monthly_payments` = `$36,652.78 / 36` = `$1,018.13`
+* `monthly_value()`: `total_value() / length_in_months` = `$36,652.78 / 36` = `$1,018.13`
